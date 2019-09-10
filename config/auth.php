@@ -44,11 +44,7 @@ return [
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
-        ],
-
-        'api_device' => [
-            'driver' => 'token',
-            'provider' => 'devices',
+            'hash' => false,
         ],
     ],
 
@@ -73,11 +69,6 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
-        ],
-
-        'devices' => [
-            'driver' => 'eloquent',
-            'model' => App\Device::class,
         ],
 
         // 'users' => [
