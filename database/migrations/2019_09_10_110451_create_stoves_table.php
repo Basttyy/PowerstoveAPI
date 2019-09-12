@@ -16,7 +16,7 @@ class CreateStovesTable extends Migration
         Schema::create('stoves', function (Blueprint $table) {
             $table->string('imei', 50)->primary();
             $table->string('name', 60)->nullable();
-            $table->integer('user_id')->unsigned()->references('id')->on('users');
+            $table->integer('user_id')->nullable()->unsigned()->references('id')->on('users')->onUpdate('no action')->onDelete('no action');
             $table->tinyInteger('paid')->default(0);
             $table->string('api_token', 60)->nullable()->unique();
             $table->dateTime('created_at')->useCurrent();

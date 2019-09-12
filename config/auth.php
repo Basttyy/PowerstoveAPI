@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'api',
         'passwords' => 'users',
     ],
 
@@ -40,11 +40,25 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-
-        'api' => [
-            'driver' => 'token',
+        'api-admin' => [
+            'driver' => 'jwt',
             'provider' => 'users',
-            'hash' => false,
+            //'hash' => false
+        ],
+        'api-agent' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+            //'hash' => false
+        ],
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'users',
+            //'hash' => false
+        ],
+        'api-iot' => [
+            'driver' => 'jwt',
+            'provider' => 'stoves'
+            //'hash' => false,
         ],
     ],
 
@@ -66,9 +80,21 @@ return [
     */
 
     'providers' => [
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+        'agents' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Agent::class,
+        ],
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\Models\User::class,
+        ],
+        'stoves' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Stove::class,
         ],
 
         // 'users' => [

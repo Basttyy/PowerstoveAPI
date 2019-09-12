@@ -15,7 +15,7 @@ class CreateFeedbacksTable extends Migration
     {
         Schema::create('feedbacks', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('user_id')->unsigned()->references('id')->on('users');
+            $table->integer('user_id')->unsigned()->references('id')->on('users')->onDelete('cascade');
             $table->text('message', 300);
             $table->timestamps();
         });

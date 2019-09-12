@@ -8,13 +8,13 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable implements JWTSubject
+class Agent extends Authenticatable implements JWTsubject
 {
     //use billable;
     use Notifiable;
     public $timestamps = false;
 
-    protected $table = 'users';
+    protected $table = 'agents';
     protected $primaryKey = 'id';
 
     /**
@@ -36,22 +36,22 @@ class User extends Authenticatable implements JWTSubject
         'activated', 'avatar', 'remember_token'
     ];
 
-        /**
+    /**
      * Get dataset this model has
      * @return \App\Database\Eloquent\Relations\HasMany
      */
-    public function stoves()
+    public function users()
     {
-        return $this->hasMany(App/Models/Stove::Class);
+        return $this->hasMany(App/Models/User::Class);
     }
 
     /**
      * Get dataset this model belongs to
      * @return \App\Database\Eloquent\Relations\BelongsTo
      */
-    public function agent()
+    public function admin()
     {
-        return $this->BelongsTo(App/Models/Agent::Class);
+        return $this->BelongsTo(App/Models/Admin::Class);
     }
 
     /**
