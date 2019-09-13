@@ -42,7 +42,7 @@ class Agent extends Authenticatable implements JWTsubject
      */
     public function users()
     {
-        return $this->hasMany(App/Models/User::Class);
+        return $this->hasMany(User::Class);
     }
 
     /**
@@ -51,7 +51,7 @@ class Agent extends Authenticatable implements JWTsubject
      */
     public function admin()
     {
-        return $this->BelongsTo(App/Models/Admin::Class);
+        return $this->BelongsTo(Admin::Class);
     }
 
     /**

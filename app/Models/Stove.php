@@ -11,16 +11,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Stove extends Authenticatable
 {
     /** @var string $primaryKey */
-    protected $primaryKey = 'imei';
+    protected $primaryKey = 'id';
 
     /** @var string $table */
     protected $table = 'stoves';
-
-    /** @var bool $incrementing */
-    public $incrementing = false;
-
-    /** @var string $keyType */
-    protected $keyType = 'string';
 
     /**
      * The attributes that are mass assignable.
@@ -28,7 +22,7 @@ class Stove extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'imei', 'name',
+        'imei', 'paid', 'user_id'
     ];
 
     /**
@@ -41,21 +35,12 @@ class Stove extends Authenticatable
     ];
 
     /**
-     * Get dataset this model has
+     * Get dataset this model belongs to
      * @return \App\Database\Eloquent\Relations\HasMany
      */
     public function user()
     {
         return $this->BelongsTo(App/Models/User::Class);
-    }
-
-    /**
-     * Get dataset this model belongs to
-     * @return \App\Database\Eloquent\Relations\BelongsTo
-     */
-    public function admins()
-    {
-        return $this->hasMany(App/Models/Admin::Class);
     }
 
     /**

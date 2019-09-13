@@ -5,9 +5,16 @@ namespace App\Http\Controllers\Auth\ApiIot;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class AuthController extends Controller
 {
+    /*
+    |--------------------------------------------------------------------------
+    | Login Controller
+    |--------------------------------------------------------------------------    |
+    */
+    use AuthenticatesUsers;
     /**
      * Create a new AuthController instance.
      *
@@ -19,20 +26,33 @@ class AuthController extends Controller
     }
 
     /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    protected function validateLogin(Request $request)
+    {
+        $this->validate($request, [
+            $this->username() => 'required|string',
+            'api_token' => 'required|string',
+        ]);
+    }
+
+    /**
      * Get a JWT via given credentials.
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
     {
-        $this->validate($request,[
-            $this->username() => 'required|string',
-            //'password' => 'required'
-        ]);
-        $credentials = $request->only([$this->username()]);
-        if (! $token = auth('api-iot')->attempt($credentials)) {
+        if (! $user = $this->guard()->getProvider()->retrieveByCredentials(
+            $this->credentials($request)
+        )) {
             return response()->json(['error' => 'Unauthorized Device'], 401);
         }
+        // Get the token
+        $token = auth()->tokenById($user->id);
 
         return $this->respondWithToken($token);
     }
@@ -81,8 +101,19 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 4320
         ]);
+    }
+
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+        return $request->only($this->username() , 'api_token');
     }
 
     /**
@@ -93,5 +124,15 @@ class AuthController extends Controller
     public function username()
     {
         return 'imei';
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\Guard
+     */
+    protected function guard()
+    {
+        return Auth::guard('api-iot');
     }
 }

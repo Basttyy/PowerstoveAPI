@@ -36,13 +36,22 @@ class User extends Authenticatable implements JWTSubject
         'activated', 'avatar', 'remember_token'
     ];
 
-        /**
+    /**
      * Get dataset this model has
      * @return \App\Database\Eloquent\Relations\HasMany
      */
     public function stoves()
     {
-        return $this->hasMany(App/Models/Stove::Class);
+        return $this->hasMany(Stove::Class);
+    }
+
+    /**
+     * Get dataset this model has
+     * @return \App\Database\Eloquent\Relations\HasMany
+     */
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::Class);
     }
 
     /**
@@ -51,7 +60,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function agent()
     {
-        return $this->BelongsTo(App/Models/Agent::Class);
+        return $this->BelongsTo(Agent::Class);
     }
 
     /**

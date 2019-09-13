@@ -14,7 +14,7 @@ class Admin extends Authenticatable implements JWTSubject
     use Notifiable;
     public $timestamps = false;
 
-    protected $table = 'admin';
+    protected $table = 'admins';
     protected $primaryKey = 'id';
 
     /**
@@ -41,7 +41,7 @@ class Admin extends Authenticatable implements JWTSubject
      */
     public function agents()
     {
-        return $this->hasMany(App/Models/Agents::Class);
+        return $this->hasMany(Agent::Class);
     }
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
