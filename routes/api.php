@@ -30,6 +30,8 @@ Route::middleware('auth:api-iot')->get('/devices', function (Request $request) {
     return $request->user();
 });
 
+//Auth::routes(['verify' => true]);
+
 //Admin Authentication
 Route::group(['prefix' => 'auth'], function ($router) {
     //user auth routes

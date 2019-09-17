@@ -8,7 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Agent extends Authenticatable implements JWTsubject
+class Agent extends Authenticatable implements JWTsubject, MustVerifyEmail
 {
     //use billable;
     use Notifiable;

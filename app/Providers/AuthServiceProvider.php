@@ -13,7 +13,13 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+        //'App\Model' => 'App\Policies\ModelPolicy',
+        'App\Models\Admin' => 'App\Policies\AdminPolicy',
+        'App\Models\Agent' => 'App\Policies\AgentPolicy',
+        'App\Models\User' => 'App\Policies\UserPolicy',
+        'App\Models\Stove' => 'App\Policies\StovePolicy',
+        'App\Models\Payment' => 'App\Policies\PaymentPolicy',
+        'App\Models\Feedback' => 'App\Policies\FeedbackPolicy',
     ];
 
     /**
@@ -25,6 +31,6 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        //Auth::routes(['verify' => true]);
     }
 }

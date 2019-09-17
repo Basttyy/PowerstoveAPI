@@ -29,6 +29,7 @@ class CreateAdminsTable extends Migration
 			$table->tinyInteger('activated')->default(0);
             $table->string('avatar', 255)->nullable();
             $table->rememberToken()->nullable();
+            $table->dateTime('email_verified_at')->nullable();
             $table->dateTime('created_at')->useCurrent();
             $table->dateTime('updated_at')->useCurrent();
         });

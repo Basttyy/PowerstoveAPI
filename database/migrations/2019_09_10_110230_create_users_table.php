@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration
 			$table->tinyInteger('activated')->default(0);
             $table->string('avatar', 255);
             $table->rememberToken();
+            $table->dateTime('email_verified_at')->nullable();
             $table->dateTime('created_at')->useCurrent();
             $table->dateTime('updated_at')->useCurrent();
         });
