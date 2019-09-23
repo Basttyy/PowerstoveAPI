@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
@@ -10,6 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
  */
 class Stove extends Authenticatable
 {
+    use SoftDeletes;
     /** @var string $primaryKey */
     protected $primaryKey = 'id';
 
@@ -40,7 +42,7 @@ class Stove extends Authenticatable
      */
     public function user()
     {
-        return $this->BelongsTo(App/Models/User::Class);
+        return $this->BelongsTo(User::Class);
     }
 
     /**

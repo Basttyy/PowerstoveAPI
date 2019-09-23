@@ -15,10 +15,11 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->integer('agent_id')->unsigned()->references('id')->on('agents')->onUpdate('no action')->onDelete('no action');
             $table->string('name', 128);
             $table->string('email', 128)->unique();
             $table->string('password', 100);
+            $table->integer('agent_id')->nullable();
+            $table->integer('admin_id')->nullable();
             $table->text('credit_card', 512)->nullable();
 			$table->string('address', 128)->nullable();
 			$table->string('city', 100)->nullable();

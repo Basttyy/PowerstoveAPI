@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\VerifyApiEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -25,13 +26,23 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'credit_card', 'address',
+        'name', 'email', 'password', 'access_level', 'agent_id', 'admin_id', 'credit_card', 'address',
         'city', 'region', 'postal_code', 'country', 'mob_phone',
         'activated', 'avatar', 'remember_token'
     ];
@@ -55,12 +66,44 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     }
 
     /**
-     * Get dataset this model belongs to
-     * @return \App\Database\Eloquent\Relations\BelongsTo
+     * Get dataset this model has
+     * @return \App\Database\Eloquent\Relations\belongsToMany
      */
-    public function agent()
+    public function roles()
     {
-        return $this->BelongsTo(Agent::Class);
+        return $this->belongsToMany(Role::Class);
+    }
+
+    /**
+     * authorize roles
+     * @param string|array $roles
+     */
+    public function authorizeRoles($roles)
+    {
+        if (is_array($roles)) {
+            return $this->hasAnyRole($roles) ||
+                abort(401, 'this action is unauthorized');
+        }
+        return $this->hasRole($roles) ||
+            abort(401, 'this action is unauthorized');
+    }
+
+    /**
+     * Check multiple roles
+     * @param array $roles
+     */
+    public function hasAnyRole($roles)
+    {
+        return $this->roles()->whereIn('name', $roles)->exists();
+    }
+
+    /**
+     * Check one roles
+     * @param string $roles
+     */
+    public function hasRole($role)
+    {
+        return $this->roles()->where('name', $role)->exists();
     }
 
     /**
@@ -81,5 +124,12 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function getJWTCustomClaims()
     {
         return [];
+    }
+    /**
+     * send an email verification link to a user
+     */
+    public function sendApiEmailVerificationNotification()
+    {
+        $this->notify(new VerifyApiEmail);      //the custom notification
     }
 }

@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers\Auth\Api;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
+use App\Http\Requests\User\StoreUserRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Validator;
+use Illuminate\Foundation\Auth\VerifiesEmail;
+use Illuminate\Auth\Events\Verified;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class AuthController extends Controller
 {
+    use VerifiesEmail;
     /**
      * Create a new AuthController instance.
      *
@@ -16,6 +24,29 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['login']]);
+    }
+
+    /**
+     * Signup a new user to the system.
+     *
+     * @param  App\Http\Requests\User\StoreUserRequest  $request
+     * @return \Illuminate\Http\UserResource
+     */
+    public function register(StoreUserRequest $request)
+    {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'avatar' => $request->avatar
+        ]);
+        $user->roles()->attach(Role::where('id', Auth::user()->roles()->first()->id + 1)->first());
+        $user->sendApiEmailVerificationNotification();
+
+        return response([
+                'success' => 'please confirm your email by clicking on verify user button sent to you on your email'
+            ], response::HTTP_CREATED
+        );
     }
 
     /**
@@ -32,10 +63,12 @@ class AuthController extends Controller
         $credentials = $request->only([$this->username(), 'password']);
 
         if (! $token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized User'], 401);
+            return response()->json(['message' => 'Unauthorized User'], Response::HTTP_UNAUTHORIZED);
         }
-
-        return $this->respondWithToken($token);
+        if (auth()->user()->email_verified_at !== NULL)
+            return $this->respondWithToken($token);
+        else
+            return response()->json(['error' => 'please verify email'], Response::HTTP_UNAUTHORIZED);
     }
 
     /**
@@ -45,7 +78,10 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+        return response()->json(
+            new UserResource(auth()->user()),
+            response::HTTP_OK
+        );
     }
 
     /**
@@ -80,10 +116,11 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
+            'user' => new UserResource(auth()->user()),
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+        ], response::HTTP_OK);
     }
 
     /**

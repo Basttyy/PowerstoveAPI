@@ -13,14 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-//admin auth middleware
-Route::middleware('auth:api-admin')->get('/admins', function (Request $request) {
-    return $request->user();
-});
-//agent auth middleware
-Route::middleware('auth:api-agent')->get('/agents', function (Request $request) {
-    return $request->user();
-});
 //user auth middleware
 Route::middleware('auth:api')->get('/users', function (Request $request) {
     return $request->user();
@@ -32,41 +24,20 @@ Route::middleware('auth:api-iot')->get('/devices', function (Request $request) {
 
 //Auth::routes(['verify' => true]);
 
-//Admin Authentication
-Route::group(['prefix' => 'auth'], function ($router) {
-    //user auth routes
-    Route::post('/admin/login','Auth\Api\AuthAdminController@login');
-    Route::post('/admin/logout', 'Auth\Api\AuthAdminController@logout');
-    Route::post('/admin/refresh', 'Auth\Api\AuthAdminController@refresh');
-    Route::post('/admin/profile', 'Auth\Api\AuthAdminController@me');
-    // Route::post('/user/facebook', 'CustomerController@loginFacebook');
-    // Route::get('/oauth/token', 'CustomerController@redirect');
-    // Route::get('/oauth/callback', 'CustomerController@callback');
-});
-//Agent Authentication
-Route::group(['prefix' => 'auth'], function ($router) {
-    //user auth routes
-    Route::post('/agent/login','Auth\Api\AuthAgentController@login');
-    Route::post('/agent/logout', 'Auth\Api\AuthAgentController@logout');
-    Route::post('/agent/refresh', 'Auth\Api\AuthAgentController@refresh');
-    Route::post('/agent/profile', 'Auth\Api\AuthAgentController@me');
-    // Route::post('/user/facebook', 'CustomerController@loginFacebook');
-    // Route::get('/oauth/token', 'CustomerController@redirect');
-    // Route::get('/oauth/callback', 'CustomerController@callback');
-});
 //User Authentication
-Route::group(['prefix' => 'auth'], function ($router) {
+Route::group(['prefix' => 'v1/auth'], function ($router) {
     //user auth routes
-    Route::post('/user/login','Auth\Api\AuthController@login');
-    Route::post('/user/logout', 'Auth\Api\AuthController@logout');
-    Route::post('/user/refresh', 'Auth\Api\AuthController@refresh');
-    Route::post('/user/profile', 'Auth\Api\AuthController@me');
+    Route::post('/login','Auth\Api\AuthController@login');
+    Route::post('/register', 'Auth\Api\AuthController@register');
+    Route::post('/logout', 'Auth\Api\AuthController@logout');
+    Route::post('/refresh', 'Auth\Api\AuthController@refresh');
+    Route::get('/profile', 'Auth\Api\AuthController@me');
     // Route::post('/user/facebook', 'CustomerController@loginFacebook');
     // Route::get('/oauth/token', 'CustomerController@redirect');
     // Route::get('/oauth/callback', 'CustomerController@callback');
 });
 //IoT Authentication
-Route::group(['prefix' => 'auth'], function ($router) {
+Route::group(['prefix' => 'v1/auth'], function ($router) {
     //device auth routes
     Route::post('/device/login', 'Auth\ApiIot\AuthController@login');
     Route::post('/device/logout', 'Auth\ApiIot\AuthController@logout');
@@ -74,12 +45,13 @@ Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('/device/profile', 'Auth\ApiIot\AuthController@me');
 });
 
+Route::get('email/verify/{id}', 'VerificationApiController@verify')->name('verificationapi.verify');
+Route::get('email/resend', 'VerificationApiController@resend')->name('verificationapi.resend');
+
 Route::apiResources([
-    '/admins' => 'Api\AdminController',
-    '/agents' => 'Api\AgentController',
-    '/users' => 'Api\UserController',
-    '/stoves' => 'Api\StoveController',
-    '/feedbacks' => 'Api\FeedbackController'
+    '/v1/users' => 'Api\UserController',
+    '/v1/stoves' => 'Api\StoveController',
+    '/v1/feedbacks' => 'Api\FeedbackController'
 ]);
 
 // //All User Based Protected Routes
