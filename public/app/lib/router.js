@@ -24,11 +24,11 @@ router.on({
   'signup': () => {
     showSignupForm('./app/views/auth/signup.html');
   },
-  'verify-account/:access_code': (params) =>{
-    showVerifyAccount('./app/views/auth/verify-account.html', params);
+  'auth/email/verify/:id': (params, query) =>{
+    showVerifyAccount('./app/views/auth/verify-account.html', params, query);
   },
-  'reset-password/:access_code': (params) =>{
-    showResetPassword('./app/views/auth/reset-password.html', params);
+  'auth/password/reset': (params, query) =>{
+    showResetPassword('./app/views/auth/reset-password.html', params, query);
   },
   'forgot-password': () =>{
     showRequestPassForm('./app/views/auth/forgot-password.html');

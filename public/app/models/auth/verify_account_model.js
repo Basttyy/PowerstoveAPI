@@ -1,20 +1,18 @@
-let verifyAccount = (url, params) =>{
+let verifyAccount = (url) =>{
     return new Promise((resolve, reject) =>{
-        verifyData = JSON.stringify(params);
         //alert(resetData);
         $.ajax({
             url: url,
-            type: "POST",
-            contentType: "application/json",
-            data: verifyData
+            type: "GET",
+            contentType: "application/json"
         })
         .done((response) =>{
-            alert('done');
+            //alert('done');
             //this means the api call succeeded
             resolve(response);
         })
         .fail((xhr, resp, text) =>{
-            alert('fail');
+            //alert('fail');
             reject(xhr);
         });
     });

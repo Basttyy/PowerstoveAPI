@@ -6,13 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\VerifyApiEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordInterface;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Authenticatable implements JWTSubject, MustVerifyEmail
+class User extends Authenticatable implements JWTSubject, MustVerifyEmail, CanResetPasswordInterface
 {
     //use billable;
+    use CanResetPasswordTrait;
     use Notifiable;
+    use softDeletes;
     public $timestamps = false;
 
     protected $table = 'users';

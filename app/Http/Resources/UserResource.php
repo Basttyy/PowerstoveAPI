@@ -26,7 +26,8 @@ class UserResource extends JsonResource
             'city' => $this->city,
             'postal_code' => $this->postal_code,
             'phone_num' => $this->mob_phone,
-            'access_level' => $this->id === auth()->user()->id ? auth()->user()->roles()->first()->name : $this->roles()->first()->name
+            'access_level' => $this->roles()->first()->name
+            //'access_level' => $this->id === auth()->user()->id ? auth()->user()->roles()->first()->name : $this->roles()->first()->name
         ];
     }
 }

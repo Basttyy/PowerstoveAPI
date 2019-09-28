@@ -4,8 +4,9 @@ let resetPassword = (url, params) =>{
         alert(resetData);
         $.ajax({
             url: url,
-            type: "POST",
+            type: "PUT",
             contentType: "application/json",
+            Accept : "application/json",
             data: resetData
         })
         .done((response) =>{

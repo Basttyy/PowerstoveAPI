@@ -26,10 +26,10 @@ class CreateUsersTable extends Migration
 			$table->string('region', 100)->nullable();
 			$table->string('postal_code', 100)->nullable();
 			$table->string('country', 100)->nullable();
-            $table->string('mob_phone', 20)->nullable();            
-			$table->tinyInteger('activated')->default(0);
+            $table->string('mob_phone', 20)->nullable();  
             $table->string('avatar', 255);
             $table->rememberToken();
+            $table->softDeletes();
             $table->dateTime('email_verified_at')->nullable();
             $table->dateTime('created_at')->useCurrent();
             $table->dateTime('updated_at')->useCurrent();

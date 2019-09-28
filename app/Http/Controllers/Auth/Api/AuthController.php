@@ -2,20 +2,22 @@
 
 namespace App\Http\Controllers\Auth\Api;
 
+use App\Models\User;
+use App\Models\Role;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
-use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\Auth\StoreUserRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Validator;
-use Illuminate\Foundation\Auth\VerifiesEmail;
+use Illuminate\Foundation\Auth\VerifiesEmails;
 use Illuminate\Auth\Events\Verified;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 
 class AuthController extends Controller
 {
-    use VerifiesEmail;
+    use VerifiesEmails;
     /**
      * Create a new AuthController instance.
      *
@@ -29,24 +31,33 @@ class AuthController extends Controller
     /**
      * Signup a new user to the system.
      *
-     * @param  App\Http\Requests\User\StoreUserRequest  $request
+     * @param  App\Http\Requests\Auth\StoreUserRequest  $request
      * @return \Illuminate\Http\UserResource
      */
     public function register(StoreUserRequest $request)
     {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'avatar' => $request->avatar
-        ]);
-        $user->roles()->attach(Role::where('id', Auth::user()->roles()->first()->id + 1)->first());
-        $user->sendApiEmailVerificationNotification();
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'avatar' => $request->avatar,
+                'agent_id' => auth()->user()->id,
+                'admin_id' => auth()->user()->agent_id
+            ]);
+            $user->roles()->attach(Role::where('id', Auth::user()->roles()->first()->id + 1)->first());
+            $message = $user->sendApiEmailVerificationNotification();
 
-        return response([
-                'success' => 'please confirm your email by clicking on verify user button sent to you on your email'
-            ], response::HTTP_CREATED
-        );
+            return response()->json([
+                'message' => 'please confirm your email by clicking on verify user button sent to you on your email'
+            ], response::HTTP_CREATED);
+        } catch (\Swift_TransportException $e) {
+            $user->forceDelete();
+            $user->roles()->forceDelete();
+            return response()->json([
+                'message' => $e->getMessage()
+            ], response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -67,8 +78,7 @@ class AuthController extends Controller
         }
         if (auth()->user()->email_verified_at !== NULL)
             return $this->respondWithToken($token);
-        else
-            return response()->json(['error' => 'please verify email'], Response::HTTP_UNAUTHORIZED);
+        else return response()->json(['message' => 'please verify email'], Response::HTTP_UNAUTHORIZED);
     }
 
     /**

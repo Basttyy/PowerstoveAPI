@@ -9,6 +9,7 @@ let login = (path, form_data) =>{
             url: api_url + path,
             type : "POST",
             contentType : 'application/json',
+            Accept : "application/json",
             data : form_data
         }).done((response) =>{
             //this means the api call suceeded, so resolve the response

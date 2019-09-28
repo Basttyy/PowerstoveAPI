@@ -1,8 +1,8 @@
 $(document).ready(() =>{
     $(document).on('submit','#reset_pass_form', function(){
-        if($('#password1').val() == $('#password2').val()){
+        if($('#password1').val() === $('#password2').val()){
             var reset_pass_form = $(this);
-            var url = api_url + "api/auth/reset_password.php";
+            var url = api_url + "api/v1/auth/resetpassword";
 
             resetPassword(url, reset_pass_form)
             .then(
@@ -24,12 +24,13 @@ $(document).ready(() =>{
     });
 })
 
-let showResetPassword = (url, params) => {
+let showResetPassword = (url, params, query) => {
     // remove jwt
     setCookie("jwt", "", 1);
     loadHTML(url, 'hide-nav-view');
     setTimeout(function(){
-        $('#access_code').val(params.access_code);
+        $('#access_code').val(query.substr(59, 64));
+        $('#username').val(query.substr(130, query.length).replace("%40", "@"))
     }, 15);
     // $id('nav-activate').hidden = true;
     // $id('side-activate').hidden = true;

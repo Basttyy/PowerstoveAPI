@@ -1,18 +1,18 @@
-let showVerifyAccount = (url, params) => {
-    verifyUrl = api_url + "api/auth/verify_account.php"
+let showVerifyAccount = (url, params, query) => {
+    verifyUrl = api_url + "api/v1/auth/email/verify/"+ params.id + '?' + query
     // remove jwt
     setCookie("jwt", "", 1)
     loadHTML(url, 'hide-nav-view')
     setTimeout(function(){
         $('#verify_success, #verify_error').hide()
-        verifyAccount(verifyUrl, params)
+        verifyAccount(verifyUrl)
         .then(
             function(response){
-                alert(response.message)
+                //alert(response.message)
                 $('#verify_error, #verify_info').hide(1200)
                 $('#verify_success').show(700)
                 setTimeout(async function(){
-                    formValues = await orderStove()
+                    //formValues = await orderStove()
                     
                     // router.navigate()
                 }, 2000)
@@ -20,7 +20,7 @@ let showVerifyAccount = (url, params) => {
         )
         .catch(
             function(xhr, resp, text){
-                alert(xhr.responseJSON.message)
+                //alert(xhr.responseJSON.message)
                 $('#verify_success, #verify_info').hide(1200)
                 $('#verify_error').show(700)
             }

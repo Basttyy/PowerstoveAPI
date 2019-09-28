@@ -170,8 +170,8 @@
         <script src="./app/viewmodels/auth/reset_password_vmodel.js"></script>
         <script src="./app/viewmodels/auth/verify_account_vmodel.js"></script>
         <!--Library Scripts-->
-        <script src="././app/lib/navigo.js"></script>
-        <script src="././app/lib/router.js"></script>
+        <script src="./app/lib/navigo.js"></script>
+        <script src="./app/lib/router.js"></script>
         <script>
             router.updatePageLinks();
         </script>

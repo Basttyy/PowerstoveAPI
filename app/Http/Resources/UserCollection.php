@@ -23,7 +23,9 @@ class UserCollection extends Resource
             'country' => $this->country,
             'state' => $this->state,
             'city' => $this->city,
-            'access_level' => $this->id === auth()->user()->id ? auth()->user()->roles()->first()->name : $this->roles()->first()->name,
+            'access_level' => $this->id === auth()->user()->id ?    //check if authenticated user is same as the user resource to return the right access_level
+                auth()->user()->roles()->first()->name :
+                $this->roles()->first()->name,
             'href' => [
                 'link' => route('users.show', $this->id)
             ]

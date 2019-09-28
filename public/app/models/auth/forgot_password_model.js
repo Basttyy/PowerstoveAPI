@@ -9,6 +9,7 @@ let requestReset = (url, form_data) =>{
             url: url,
             type : "POST",
             contentType : 'application/json',
+            accept : "application/json",
             data : form_data
         }).done((response) =>{
             //this means the api call suceeded, so resolve the response

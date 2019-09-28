@@ -45,8 +45,11 @@ Route::group(['prefix' => 'v1/auth'], function ($router) {
     Route::post('/device/profile', 'Auth\ApiIot\AuthController@me');
 });
 
-Route::get('email/verify/{id}', 'VerificationApiController@verify')->name('verificationapi.verify');
-Route::get('email/resend', 'VerificationApiController@resend')->name('verificationapi.resend');
+Route::get('v1/auth/email/verify/{id}', 'Auth\Api\VerificationApiController@verify')->name('verificationapi.verify');
+Route::get('v1/auth/email/resend', 'Auth\Api\VerificationApiController@resend')->name('verificationapi.resend');
+Route::post('v1/auth/resetpassword', 'Auth\Api\ResetPasswordController@sendResetLink');
+Route::put('v1/auth/resetpassword', 'Auth\Api\ResetPasswordController@resetPassword');
+Route::put('v1/auth/changepassword', 'Auth\Api\ResetPasswordController@changePassword');
 
 Route::apiResources([
     '/v1/users' => 'Api\UserController',

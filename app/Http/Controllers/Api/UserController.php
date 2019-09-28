@@ -62,7 +62,8 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        auth()->user()->authorizeRoles(['super_admin', 'admin', 'agent']);
+        auth()->user()->authorizeRoles(['super_admin', 'admin', 'agent']);  //only super_admin, admin and agent allowed
+
         if ((auth()->user()->id === $user->admin_id)||(auth()->user()->id === $user->agent_id)) {
             return response(
                 new UserResource($user),
@@ -108,15 +109,16 @@ class UserController extends Controller
             ], response::HTTP_OK);
     }
 
+    //check user priority and return appropraite user collection
     public function userCheck()
     {
         if (auth()->user()->roles()->first()->name == 'super_admin') {
-            return UserCollection::collection(User::paginate(20));
+            return UserCollection::collection(User::paginate(20));      //return all users if authenticated user is super_admin
         }
-        if (auth()->user()->roles()->first()->name == 'admin') {
+        if (auth()->user()->roles()->first()->name == 'admin') {    //return only users registered under an admin
             return UserCollection::collection(User::whereAdmin_idOrAgent_id(auth()->user()->id, auth()->user()->id)->paginate(20));
         }
-        if (auth()->user()->roles()->first()->name == 'agent') {
+        if (auth()->user()->roles()->first()->name == 'agent') {    //return all users that are registered under an agent
             return UserCollection::collection(User::where('agent_id', auth()->user()->id)->get()->paginate(20));
         }
     }

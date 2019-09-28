@@ -4,7 +4,7 @@ $(document).ready(function(){
         // get form data
         var forgot_form=$(this);
         
-        requestReset(api_url + "api/auth/forgot_password.php", forgot_form)
+        requestReset(api_url + "api/v1/auth/resetpassword", forgot_form)
             .then( //login success?
                 function(response){
                     // store jwt to cookie
