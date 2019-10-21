@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use App\Notifications\VerifyApiEmail;
+use App\Notifications\CustomPasswordReset;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Auth\Passwords\CanResetPassword as CanResetPasswordTrait;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordInterface;
@@ -136,5 +137,12 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail, CanRe
     public function sendApiEmailVerificationNotification()
     {
         $this->notify(new VerifyApiEmail);      //the custom notification
+    }
+    /**
+     * send a password reset email link to a user
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new CustomPasswordReset($token));      //the custom notification
     }
 }

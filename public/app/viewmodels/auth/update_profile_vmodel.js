@@ -57,15 +57,37 @@ $(document).ready(function(){
             });
         }
     });
-    $(document.body).on('mouseenter', '#update_country', function(){
-        $('#update_country').val(obj.country).change();
-    });
-    $(document.body).on('mouseenter', '#update_state', function(){
-        $('#update_state').val(obj.state).change();
-    });
-    $(document.body).on('mouseenter', '#update_postal_code', function(){
-        $('#update_postal_code').val(obj.postalCode).change();
-    });
+    // $(document.body).on('mouseenter', '#update_country', function(){
+    //     $('#update_country').val(obj.country).change();
+    // });
+    // $(document.body).on('mouseenter', '#update_state', function(){
+    //     $('#update_state').val(obj.state).change();
+    // });
+    // $(document.body).on('mouseenter', '#update_postal_code', function(){
+    //     $('#update_postal_code').val(obj.postalCode).change();
+    // });
+    $(document.body).on('click', "#userimage", async function(){
+        const { value: file } = await Swal.fire({
+            title: 'Select Profile Picture',
+            input: 'file',
+            inputAttributes: {
+              accept: 'image/*',
+              'aria-label': 'Upload your profile picture'
+            }
+          })
+          
+          if (file) {
+            const reader = new FileReader()
+            reader.onload = (e) => {
+              Swal.fire({
+                title: 'Your uploaded picture',
+                imageUrl: e.target.result,
+                imageAlt: 'The uploaded picture'
+              })
+            }
+            reader.readAsDataURL(file)
+          }
+    })
 })
 
 var obj = {
@@ -85,18 +107,20 @@ function showUpdateProfilePage(updateUrl){
     populateUpdateForm(path)
         .then(
             function(response){
-                obj.name = response.name;
+                obj.name = response.name
                 //obj.lastname = response.data.lastname;
-                obj.email = response.email;
-                obj.country = response.country;
-                obj.state = response.state;
+                obj.email = response.email
+                obj.country = response.country
+                obj.state = response.state
                 //obj.postalCode = response.data.postal_code;
-                obj.streetAddress = response.address;
-                obj.phone = response.phone_num;
-                names = obj.name.split(" ");     // slit to firstname and last name
-                loadHTML(updateUrl, 'content');
+                obj.streetAddress = response.address
+                obj.phone = response.phone_num
+                obj.avatar = response.avatar
+                names = obj.name.split(" ")     // slit to firstname and last name
+                loadHTML(updateUrl, 'content')
                 setTimeout(function(){
-                    // Everything will have rendered here  
+                    setAuthForm()
+                    // Everything will have rendered here                    
                     $('#firstname').val(names[0]);
                     $('#lastname').val(names[1]);
                     $('#email').val(obj.email);
@@ -107,7 +131,10 @@ function showUpdateProfilePage(updateUrl){
                             $('#update_country').append($('<option></option>').val(val.toLowerCase()).html(val));
                         });
                     });
-                }, 15);
+                    $("#username").html(response.name)
+                    $("#useravatar").attr("src", obj.avatar)
+                    $("#userimage").attr("src", obj.avatar)
+                }, 25);
             }
         )
         .catch(

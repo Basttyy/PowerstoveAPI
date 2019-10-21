@@ -11,14 +11,18 @@
 |
 */
 
-Route::get('/{any}', function () {
-    return view('spapp');
-})->where('any', '^(?!api).*$');
+Route::get('/', function () {
+    return 'welcome to the app';
+});
 //where('any', '^(?!api)(?!email).*$');
 
-Route::post('#auth/password/reset', 'Auth\Api\ResetPasswordController@sendResetLink')->name('password.reset');
+Route::post('/#auth/password/reset', 'Auth\Api\ResetPasswordController@sendResetLink')->name('password.reset');
 //Route::get('auth/email/verify/{id}', 'Auth\Api\VerificationApiController@verify')->name('verificationapi.verify');
 
-Auth::routes();
+// Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'HomeController@index')->name('home');
+
+// Auth::routes();
+
+// Route::get('/home', 'HomeController@index')->name('home');

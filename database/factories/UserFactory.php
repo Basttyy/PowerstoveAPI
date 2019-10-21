@@ -20,6 +20,6 @@ $factory->define(User::class, function (Faker $faker) {
         'postal_code' => $faker->postcode,
         'country' => $faker->country,
         'mob_phone' => $faker->e164PhoneNumber,
-        'avatar' => $faker->imageUrl(200, 200, 'people')
+        'avatar' => $faker->imageUrl(50, 50, 'people')
     ];
 });

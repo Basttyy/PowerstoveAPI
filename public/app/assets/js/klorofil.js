@@ -3,16 +3,15 @@ $(document).ready(function() {
 	/*-----------------------------------/
 	/*	TOP NAVIGATION AND LAYOUT
 	/*----------------------------------*/
-
-	$('.btn-toggle-fullwidth').on('click', function() {
+	$(document.body).on('click', '.btn-toggle-fullwidth', function() {
 		if(!$('body').hasClass('layout-fullwidth')) {
 			$('body').addClass('layout-fullwidth');
 		} else {
 			$('body').removeClass('layout-fullwidth');
 		}
-
+	
 		$(this).find('.lnr').toggleClass('lnr-arrow-left-circle lnr-arrow-right-circle');
-
+	
 		if($(window).innerWidth() < 1025) {
 			if(!$('body').hasClass('offcanvas-active')) {
 				$('body').addClass('offcanvas-active');
@@ -25,8 +24,10 @@ $(document).ready(function() {
 	$(window).on('load resize', function() {
 		if($(this).innerWidth() < 1025) {
 			$('body').addClass('layout-fullwidth');
+			$('.auth-box').height($('.form-auth').height() != null ? $('.form-auth').height()+155 : $('.form-auth-small').height()+155)
 		} else {
 			$('body').removeClass('layout-fullwidth');
+			$('.auth-box').height($('.form-auth').height() != null ? $('.form-auth').height()+390 : $('.form-auth-small').height()+165)
 		}
 	});
 
@@ -41,7 +42,11 @@ $(document).ready(function() {
 		adjust .main height when it's shorter than .sidebar. Timeout to wait chart rendered */
 
 		setTimeout(function() {
-			
+			if($(window).innerWidth() < 1025) {
+				$('.auth-box').height($('.form-auth').height() != null ? $('.form-auth').height()+155 : $('.form-auth-small').height()+155)
+			} else {
+				$('.auth-box').height($('.form-auth').height() != null ? $('.form-auth').height()+390 : $('.form-auth-small').height()+165)
+			}
 			if($('.main').height() < $('.sidebar').height()) {
 				$('.main').height($('.sidebar').height());
 			}
@@ -54,7 +59,7 @@ $(document).ready(function() {
 	/*	SIDEBAR NAVIGATION
 	/*----------------------------------*/
 
-	$('.sidebar a[data-toggle="collapse"]').on('click', function() {
+	$(document.body).on('click', '.sidebar a[data-toggle="collapse"]', function() {
 		if($(this).hasClass('collapsed')) {
 			$(this).addClass('active');
 		} else {

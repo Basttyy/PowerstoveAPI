@@ -1,0 +1,34 @@
+{
+  "name": "powerstove",
+  "version": "1.0.0",
+  "description": "powerstove web app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/basttyy/powerstoveapi.git"
+  },
+  "keywords": [
+    "api",
+    "powerstove",
+    "webapp",
+    "laravel",
+    "iot"
+  ],
+  "author": "Abdulbasit Mamman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/basttyy/powerstoveapi/issues"
+  },
+  "homepage": "https://github.com/basttyy/powerstoveapi#readme",
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "chartist": "^0.11.4",
+    "jquery": "^3.4.1",
+    "jquery-slimscroll": "^1.3.8",
+    "sweetalert": "^2.1.2",
+    "toastr": "^2.1.4"
+  }
+}

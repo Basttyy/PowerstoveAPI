@@ -15,6 +15,10 @@
 /********************
  * GENERAL STYLES
  ********************/
+ #stove-usage, #payment-history {
+  background-color: lightgrey;
+}
+
 body {
   background-color: #F3F5F8;
   font-family: "Source Sans Pro", sans-serif;
@@ -1277,7 +1281,6 @@ ul.activity-list > li .timestamp {
   -webkit-border-radius: 5px;
   border-radius: 5px;
   width: 70%;
-  height: 450px;
   margin: 0 auto;
   background-color: #fff;
 }
@@ -1349,7 +1352,7 @@ ul.activity-list > li .timestamp {
 }
 .auth-box .right .heading {
   margin-top: 0;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   font-size: 26px;
   font-weight: 300;
 }
@@ -1367,7 +1370,7 @@ ul.activity-list > li .timestamp {
   background: rgba(255, 152, 0, 0.92);
 }
 .auth-box .logo {
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 .auth-box .form-auth-small .btn {
   margin-top: 20px;
@@ -2415,7 +2418,7 @@ ul.activity-timeline > li:last-child:after {
   -webkit-box-pack: flex-start;
   -webkit-justify-content: flex-start;
   -ms-flex-pack: flex-start;
-  justify-content: flex-start;
+  justify-content: flex-start;                                                                                                                                                                                                                                                                                                                                                                                                                                                         
   text-align: left;
   text-anchor: start;
 }

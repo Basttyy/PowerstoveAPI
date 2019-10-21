@@ -56,9 +56,9 @@ $(document).ready(function(){
 
 function showSignupForm(templateUrl){
     //link to authenticate
-    tokenUrl = api_url + "api/auth/validate_token.php";
+    var path = "api/v1/auth/profile";
 
-    authenticate(tokenUrl)
+    authenticateSignup(path)
         .then(
             function(response){
                 // if valid, show homepage
@@ -67,6 +67,7 @@ function showSignupForm(templateUrl){
                 $.getJSON("app/assets/data/countries.json", function(data){
                     setTimeout(function(){
                         // Everything will have rendered here
+                        setAuthForm()
                         $.each(data.countries, function(i, val){
                             $('#country').append($('<option></option>').val(val.toLowerCase()).html(val));
                         });

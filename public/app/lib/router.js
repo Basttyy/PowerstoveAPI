@@ -18,11 +18,23 @@ function loadHTML(url, id) {
 router = new Navigo(null, true, '#');
 router.on({
   // 'view' is the id of the div element inside which we render the HTML
-  'login': () => {
+  'auth/login': () => {
     prepareLogin('./app/views/auth/login.html');
   },
-  'signup': () => {
+  'user/profile': () =>{
+    showProfilePage('./app/views/user/profile.html');
+  },
+  'user/profile/update': () => {
+    showUpdateProfilePage('./app/views/auth/update-profile.html');
+  },
+  'user/profile/users/signup': () => {
     showSignupForm('./app/views/auth/signup.html');
+  },
+  'user/profile/users': () => {
+
+  },
+  'user/profile/lock-screen': () => {
+    showLockscreen('./app/views/auth/lock-screen.html');
   },
   'auth/email/verify/:id': (params, query) =>{
     showVerifyAccount('./app/views/auth/verify-account.html', params, query);
@@ -30,22 +42,13 @@ router.on({
   'auth/password/reset': (params, query) =>{
     showResetPassword('./app/views/auth/reset-password.html', params, query);
   },
-  'forgot-password': () =>{
+  'auth/password/reset-link': () =>{
     showRequestPassForm('./app/views/auth/forgot-password.html');
   },
-  'view-profile': () =>{
-    
-  },
-  'update-profile': () => {
-  showUpdateProfilePage('./app/views/auth/update-profile.html');
-  },
-  'user-details': () =>{
+  'user/profile/users/:id/user-details': () =>{
 
   },
-  'lock-screen': () =>{
-
-  },
-  'payment': () =>{
+  'user/payment': () =>{
 
   }
 });
@@ -56,6 +59,6 @@ router.on(() => {
 });
 
 // set the 404 route
-router.notFound((query) => { $id('hide-nav-view').innerHTML = '<h3>Couldn\'t find the page you\'re looking for...</h3>'; });
+router.notFound((query) => { showErrorPage('./app/views/errorpage.html'); });
 
 router.resolve();

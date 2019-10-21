@@ -25,6 +25,7 @@ let prepareLogin = (url) => {
     // remove jwt
     setCookie("jwt", "", 86400000);
     loadHTML(url, 'hide-nav-view');
-    // $id('nav-activate').hidden = true;
-    // $id('side-activate').hidden = true;
+    setTimeout(() => {
+        setAuthForm()
+    }, 200);
 };

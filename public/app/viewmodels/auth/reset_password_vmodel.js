@@ -1,6 +1,9 @@
 $(document).ready(() =>{
     $(document).on('submit','#reset_pass_form', function(){
-        if($('#password1').val() === $('#password2').val()){
+        if($('#password').val() == ""){
+            alert("password is empty");
+        }
+        else if($('#password').val() === $('#password_confirmation').val()){
             var reset_pass_form = $(this);
             var url = api_url + "api/v1/auth/resetpassword";
 
@@ -29,9 +32,9 @@ let showResetPassword = (url, params, query) => {
     setCookie("jwt", "", 1);
     loadHTML(url, 'hide-nav-view');
     setTimeout(function(){
-        $('#access_code').val(query.substr(59, 64));
-        $('#username').val(query.substr(130, query.length).replace("%40", "@"))
-    }, 15);
+        $('#token').val(query.substr(6, 64));
+        $('#email').val(query.substr(77, query.length+1))
+    }, 25);
     // $id('nav-activate').hidden = true;
     // $id('side-activate').hidden = true;
 };

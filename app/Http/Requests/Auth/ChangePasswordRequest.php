@@ -15,7 +15,7 @@ class ChangePasswordRequest extends FormRequest
      */
     public function authorize()
     {
-        return auth()->user()->authorizeRoles(['super_admin', 'admin', 'agent']);
+        return auth()->user()->authorizeRoles(['super_admin', 'admin', 'agent', 'customer']);
     }
 
     /**
@@ -26,9 +26,9 @@ class ChangePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'old_password' => ['required', function ($attribute, $value, $fail) {
+            'old_password' => ['required', 'min:6', 'max:40', function ($attribute, $value, $fail) {
                 if (!\Hash::check($value, $this->user()->password)) {
-                    $fail('Old Password did not match our records');
+                    abort(403, 'Old Password did not match our records');
                 }
             }],
             'password' => 'required|min:6|max:40|confirmed'

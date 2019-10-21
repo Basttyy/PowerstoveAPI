@@ -1,18 +1,3 @@
-let authenticate = (tokenUrl) => {
-    return new Promise((resolve, reject) =>{
-        var jwt = getCookie('jwt');
-
-        $.post(tokenUrl, JSON.stringify({ jwt: jwt }))
-            .done((response) =>{
-                resolve(response);
-            })
-            // show login page on error
-            .fail((xhr, resp, text) =>{
-                reject(xhr);
-            });
-    })
-}
-
 let signup = (url, sign_up_form_obj) =>{
     return new Promise((resolve, reject) =>{
         var form_data=JSON.stringify(sign_up_form_obj);
@@ -28,5 +13,32 @@ let signup = (url, sign_up_form_obj) =>{
         }).fail((xhr, resp, text) =>{
             reject(xhr);
         });
+    });
+}
+
+let authenticateSignup = (path) => {
+    return new Promise((resolve, reject) =>{
+        var jwt = getCookie('jwt');
+        var settings = {
+            "url" : api_url + path,
+            "method" : "GET",
+            "timeout" : 0,
+            "headers" : {
+                "Accept" : "application/json",
+                "Content-Type" : "application/json",
+                "Authorization" : jwt
+            },
+        };
+
+        $.ajax(settings)
+            .done((response) =>{
+                //if authentication successful
+                resolve(response);
+                // if valid, show homepage
+            })
+            .fail((xhr, resp, text) =>{
+                //reject if authentication failed
+                reject(xhr);
+            });
     });
 }

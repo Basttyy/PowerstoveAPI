@@ -1,16 +1,17 @@
 //global variables
-var api_url = 'https://powerstoveapi.test/';
-var home_page = '';
-var login_page = 'login';
-var update_profile_page = 'update-profile';
-var signup_page = 'signup';
-var profile_page = 'profile';
-var forgot_password_page = 'forgot-password';
-var reset_password_page = 'reset-password';
-
-$(document).ready(function(){
-
-});
+var api_url = 'https://powerstoveapi.test/'
+var home_page = ''
+var login_page = 'auth/login'
+var forgot_password_page = 'auth/password/reset-link'
+var reset_password_page = 'auth/password/reset'
+var verify_email_page = 'auth/email/verify/:id'
+var update_profile_page = 'user/profile/update'
+var add_user_page = 'user/profile/users/signup'
+var profile_page = 'user/profile'
+var users_page = 'user/profile/users'
+var user_details_page = 'user/profile/users/:id/user-details'
+var lockscreen_page = 'user/profile/lock-screen'
+var payment_page = 'user/payment'
 
 // change page title
 function changePageTitle(page_title){
@@ -88,3 +89,27 @@ function clearResponse(){
 // $('document').on('load', function(){
 //     router.updatePageLinks();
 // })
+
+/****************************
+ * Template Codes           *
+ ***************************/
+
+function closeSideNav() {
+    if(!$('body').hasClass('layout-fullwidth')) {
+        $('body').addClass('layout-fullwidth');
+    }
+    if($('btn-toggle-fullwidth').find('lnr').hasClass('lnr-arrow-left-circle')) {
+        $('btn-toggle-fullwidth').find('lnr').toggleClass('lnr-arrow-left-circle lnr-arrow-right-circle')
+    }
+    if($('body').hasClass('offcanvas-active')) {
+        $('body').removeClass('offcanvas-active');
+    }
+}
+
+function setAuthForm() {
+    if($(window).innerWidth() < 1025) {
+        $('.auth-box').height($('.form-auth').height() != null ? $('.form-auth').height()+155 : $('.form-auth-small').height()+155)
+    } else {
+        $('.auth-box').height($('.form-auth').height() != null ? $('.form-auth').height()+390 : $('.form-auth-small').height()+165)
+    }
+}
