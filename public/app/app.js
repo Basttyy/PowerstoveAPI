@@ -1,5 +1,5 @@
 //global variables
-var api_url = 'https://powerstoveapi.test/'
+var api_url = 'https://powerstoveapp.herokuapp.com/'
 var home_page = ''
 var login_page = 'auth/login'
 var forgot_password_page = 'auth/password/reset-link'
